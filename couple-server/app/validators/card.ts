@@ -7,3 +7,9 @@ export const createCardValidator = vine.compile(
     userId: vine.string().uuid(),
   })
 )
+
+export const indexCardValidator = vine.compile(
+  vine.object({
+    id: vine.string().uuid(),
+  })
+)

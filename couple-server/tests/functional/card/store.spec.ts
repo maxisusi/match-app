@@ -2,13 +2,13 @@ import User from '#models/user'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
+const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId)
+
 test.group('Card store', async (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   /** TESTING VALIDATION */
   test('fails when no title', async ({ client }) => {
-    const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId)
-
     const response = await client.post('api/cards').json({
       title: '',
       description: 'Description for card 1',
@@ -48,7 +48,6 @@ test.group('Card store', async (group) => {
   })
 
   test('fails when no description', async ({ client }) => {
-    const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId)
     const response = await client.post('api/cards').json({
       title: 'Card title',
       description: '',
@@ -62,7 +61,6 @@ test.group('Card store', async (group) => {
   })
 
   test('fails when title is below 3 character', async ({ client }) => {
-    const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId)
     const response = await client.post('api/cards').json({
       title: 'abc',
       description: 'Description for card 1',
@@ -76,7 +74,6 @@ test.group('Card store', async (group) => {
   })
 
   test('fails when description is below 100 words', async ({ client }) => {
-    const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId)
     const response = await client.post('api/cards').json({
       title: 'Card title',
       description: 'Description for card 1',
@@ -91,7 +88,6 @@ test.group('Card store', async (group) => {
 
   /** TESTING STORAGE */
   test('returns created card', async ({ client, assert }) => {
-    const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId)
     const response = await client.post('api/cards').json({
       title: 'Card title',
       description: 'Description for card 1'.repeat(10),

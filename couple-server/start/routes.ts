@@ -20,8 +20,8 @@ router
   .group(() => {
     router
       .group(() => {
-        router.get('/', [CardsController, 'index'])
-        router.get('/:id', [CardsController, 'show'])
+        router.get('/', [CardsController, 'show'])
+        router.get('/:id', [CardsController, 'index'])
         router.post('/', [CardsController, 'store'])
         router.put('/:id', [CardsController, 'update'])
         router.delete('/:id', [CardsController, 'destroy'])
