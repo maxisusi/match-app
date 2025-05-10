@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import type { HasOne } from '@adonisjs/lucid/types/relations'
+import User from './user.js'
 
 export default class Card extends BaseModel {
   @column({ isPrimary: true })
@@ -16,8 +18,10 @@ export default class Card extends BaseModel {
 
   @column()
   declare userId: string
-  // @hasOne(() => User)
-  // declare userId: HasOne<typeof User>
+
+  @hasOne(() => User)
+  declare user: HasOne<typeof User>
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

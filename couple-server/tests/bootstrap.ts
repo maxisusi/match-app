@@ -42,4 +42,9 @@ export const configureSuite: Config['configureSuite'] = (suite) => {
   if (['browser', 'functional', 'e2e'].includes(suite.name)) {
     return suite.setup(() => testUtils.httpServer().start())
   }
+  suite.onGroup((group) => {
+    group.each.setup(() => {
+      return testUtils.db().migrate()
+    })
+  })
 }
