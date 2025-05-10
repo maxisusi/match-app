@@ -1,20 +1,28 @@
-# Make controllers
-
-# Run test suite
 run_test:
   node ace test --watch
 
 make_controller target:
   node ace make:controller {{target}}
 
-# Make functional tests. target: *post/create*
+# target: *post/create*
 make_test_funct target:
   node ace make:test {{target}} --suite=functional
 
-# Make unit tests
 make_test_unit target:
   node ace make:test {{target}} --suite=unit
 
-# Make validator
 make_validator target:
   node ace make:validator {{target}}
+
+make_model target:
+  node ace make:model {{target}}
+
+make_migration target:
+  node ace make:migration {{target}}
+
+run_migration:
+  node ace migration:run
+
+run_seed:
+  node ace db:seed
+
