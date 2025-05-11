@@ -13,3 +13,11 @@ export const indexCardValidator = vine.compile(
     id: vine.string().uuid(),
   })
 )
+
+export const updateCardValidator = vine.compile(
+  vine.object({
+    title: vine.string().minLength(3).optional(),
+    description: vine.string().minLength(100).optional(),
+    status: vine.enum(['private', 'public']).optional(),
+  })
+)
