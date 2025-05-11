@@ -17,6 +17,12 @@ export default class CardsController {
       status: 'private',
     })
   }
+  async destroy({ request, response }: HttpContext) {
+    return await indexCardValidator
+      .validate(request.params())
+      .then((idx) => Card.findByOrFail({ cardId: idx.id }))
+      .then(async (card) => await card.delete().then(() => response.ok(card)))
+      .catch(() => response.status(404))
+  }
   update() {}
-  destroy() {}
 }
