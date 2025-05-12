@@ -20,6 +20,12 @@ export default class MatchesController {
       .then((idx) => Match.findByOrFail({ matchId: idx.id }))
       .catch(() => response.status(404))
   }
-  destroy() {}
+  async destroy({ request, response }: HttpContext) {
+    return await indexCardValidator
+      .validate(request.params())
+      .then((idx) => Match.findByOrFail({ matchId: idx.id }))
+      .then(async (card) => await card.delete().then(() => response.ok(card)))
+      .catch(() => response.status(404))
+  }
   update() {}
 }
