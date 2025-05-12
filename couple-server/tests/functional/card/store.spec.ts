@@ -7,7 +7,6 @@ const userId = await User.findBy({ fullName: 'John Doe' }).then((u) => u?.userId
 test.group('Card store', async (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
-  /** TESTING VALIDATION */
   test('fails when no title', async ({ client }) => {
     const response = await client.post('api/cards').json({
       title: '',
@@ -86,13 +85,13 @@ test.group('Card store', async (group) => {
     })
   })
 
-  /** TESTING STORAGE */
   test('returns created card', async ({ client, assert }) => {
     const response = await client.post('api/cards').json({
       title: 'Card title',
       description: 'Description for card 1'.repeat(10),
       userId,
     })
-    response.assertOk()
+
+    response.assertCreated()
   })
 })

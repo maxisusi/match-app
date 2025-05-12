@@ -3,18 +3,22 @@ import { createCardValidator, indexCardValidator, updateCardValidator } from '#v
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CardsController {
-  show() {}
+  show() {
+    throw new Error('Method not implemented.')
+  }
   async index({ request, response }: HttpContext) {
     return await indexCardValidator
       .validate(request.params())
       .then((idx) => Card.findByOrFail({ cardId: idx.id }))
       .catch(() => response.status(404))
   }
-  async store({ request }: HttpContext) {
+  async store({ request, response }: HttpContext) {
     const card = await createCardValidator.validate(request.body())
     return await Card.create({
       ...card,
       status: 'private',
+    }).then((c) => {
+      response.created(c)
     })
   }
   async destroy({ request, response }: HttpContext) {
@@ -28,7 +32,7 @@ export default class CardsController {
     const cardId = await indexCardValidator
       .validate(request.params())
       .then((card) => card.id)
-      .catch((e) => null)
+      .catch(() => null)
 
     if (cardId === null) {
       return response.status(404)

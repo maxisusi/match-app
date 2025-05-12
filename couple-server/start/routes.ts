@@ -8,6 +8,7 @@
 */
 
 const CardsController = () => import('#controllers/cards_controller')
+const MatchesController = () => import('#controllers/matches_controller')
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
@@ -27,5 +28,15 @@ router
         router.delete('/:id', [CardsController, 'destroy'])
       })
       .prefix('cards')
+
+    router
+      .group(() => {
+        router.get('/', [MatchesController, 'show'])
+        router.get('/:id', [MatchesController, 'index'])
+        router.post('/', [MatchesController, 'store'])
+        router.put('/:id', [MatchesController, 'update'])
+        router.delete('/:id', [MatchesController, 'destroy'])
+      })
+      .prefix('matches')
   })
   .prefix('/api')
