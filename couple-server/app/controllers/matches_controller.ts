@@ -1,4 +1,5 @@
 import Match from '#models/match'
+import { indexCardValidator } from '#validators/index'
 import { createMatchValidator } from '#validators/match'
 import { HttpContext } from '@adonisjs/core/http'
 
@@ -13,7 +14,12 @@ export default class MatchesController {
       response.created(match)
     })
   }
-  index() {}
+  async index({ request, response }: HttpContext) {
+    return await indexCardValidator
+      .validate(request.params())
+      .then((idx) => Match.findByOrFail({ matchId: idx.id }))
+      .catch(() => response.status(404))
+  }
   destroy() {}
   update() {}
 }

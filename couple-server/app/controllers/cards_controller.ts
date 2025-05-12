@@ -1,5 +1,6 @@
 import Card from '#models/card'
-import { createCardValidator, indexCardValidator, updateCardValidator } from '#validators/card'
+import { createCardValidator, updateCardValidator } from '#validators/card'
+import { indexCardValidator } from '#validators/index'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CardsController {

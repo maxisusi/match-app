@@ -8,12 +8,6 @@ export const createCardValidator = vine.compile(
   })
 )
 
-export const indexCardValidator = vine.compile(
-  vine.object({
-    id: vine.string().uuid(),
-  })
-)
-
 export const updateCardValidator = vine.compile(
   vine.object({
     title: vine.string().minLength(3).optional(),
