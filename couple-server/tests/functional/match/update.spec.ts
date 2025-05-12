@@ -1,0 +1,38 @@
+import Match from '#models/match'
+import testUtils from '@adonisjs/core/services/test_utils'
+import { test } from '@japa/runner'
+import { randomUUID } from 'node:crypto'
+
+const match = await Match.findBy({ name: 'Match card 1' }).then((m) => m?.matchId)
+
+test.group('Match update', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+  test('fails when id is not a UUID', async ({ client }) => {
+    const response = await client.put(`api/matches/1122`)
+    response.assertNotFound()
+  })
+  test('fails when id is not found', async ({ client }) => {
+    const response = await client.put(`api/matches/${randomUUID()}`)
+    response.assertNotFound()
+  })
+
+  test('fails when name is below 3 characters', async ({ client }) => {
+    const response = await client.put(`api/matches/${match}`).json({
+      name: 'ab',
+    })
+    response.assertUnprocessableEntity()
+    response.assertBodyContains({
+      errors: [{ rule: 'minLength' }],
+    })
+  })
+
+  test('returns card when updated', async ({ client }) => {
+    const response = await client.put(`api/matches/${match}`).json({
+      name: 'Match card 2',
+    })
+    response.assertOk()
+    response.assertBodyContains({
+      name: 'Match card 2',
+    })
+  })
+})

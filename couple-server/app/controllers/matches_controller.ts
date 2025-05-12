@@ -1,6 +1,6 @@
 import Match from '#models/match'
 import { indexCardValidator } from '#validators/index'
-import { createMatchValidator } from '#validators/match'
+import { createMatchValidator, updateMatchValidator } from '#validators/match'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class MatchesController {
@@ -27,5 +27,24 @@ export default class MatchesController {
       .then(async (card) => await card.delete().then(() => response.ok(card)))
       .catch(() => response.status(404))
   }
-  update() {}
+  async update({ request, response }: HttpContext) {
+    const matchId = await indexCardValidator
+      .validate(request.params())
+      .then((card) => card.id)
+      .catch(() => null)
+
+    if (matchId === null) {
+      return response.status(404)
+    }
+
+    return await updateMatchValidator.validate(request.body()).then((payload) =>
+      Match.findByOrFail({ matchId }).then(async (match) => {
+        match.merge({
+          name: payload?.name,
+        })
+        await match.save()
+        return response.ok(match)
+      })
+    )
+  }
 }
