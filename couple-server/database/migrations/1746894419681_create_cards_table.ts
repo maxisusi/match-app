@@ -1,5 +1,4 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
-import { randomUUID } from 'node:crypto'
 
 export default class extends BaseSchema {
   protected tableName = 'cards'
@@ -7,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('card_id').primary().defaultTo(randomUUID())
+      table.uuid('card_id').primary()
 
       table.string('title').notNullable()
       table.string('description').notNullable()

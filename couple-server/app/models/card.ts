@@ -1,11 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, column, hasOne } from '@adonisjs/lucid/orm'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import User from './user.js'
 
 export default class Card extends BaseModel {
   @column({ isPrimary: true })
   declare cardId: string
+
+  @beforeCreate()
+  static async addUUID(card: Card) {
+    card.cardId = crypto.randomUUID()
+    card.status = 'private'
+  }
 
   @column()
   declare title: string

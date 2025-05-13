@@ -1,7 +1,6 @@
 import Match from '#models/match'
 import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import { randomUUID } from 'node:crypto'
 
 export default class extends BaseSeeder {
   async run() {
@@ -9,13 +8,11 @@ export default class extends BaseSeeder {
       email: 'logan@doe.com',
       fullName: 'Logan Doe',
       password: 'password',
-      userId: randomUUID(),
     })
 
     await Match.create({
       name: 'Match card 1',
       userId: user.userId,
-      matchId: randomUUID(),
     })
   }
 }

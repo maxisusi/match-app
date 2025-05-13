@@ -1,12 +1,11 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
-import { randomUUID } from 'node:crypto'
 
 export default class extends BaseSchema {
   protected tableName = 'matches'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('match_id').primary().defaultTo(randomUUID())
+      table.uuid('match_id').primary()
 
       table.string('name', 255).notNullable()
 
